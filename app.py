@@ -1,6 +1,8 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)  # This will allow cross-origin requests for all routes
 
 @app.route('/multiply', methods=['POST'])
 def multiply():

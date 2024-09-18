@@ -3,15 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Page 2 - My Website</title>
+    <title>Multiplier App</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-        }
-
-        .container {
             display: flex;
         }
 
@@ -20,6 +17,7 @@
             background-color: #f4f4f4;
             padding: 20px;
             height: 100vh;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
         }
 
         .sidebar a {
@@ -34,30 +32,115 @@
             background-color: #ddd;
         }
 
-        .content {
-            padding: 20px;
+        .container {
             flex-grow: 1;
+            padding: 50px;
         }
 
-        .content h1 {
-            margin-top: 0;
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 1.5em;
+            color: green;
+        }
+
+        .error {
+            color: red;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="sidebar">
-            <a href="index.html">Home</a>
-            <a href="page1.html">Page 1</a>
-            <a href="page2.html">Page 2</a>
-            <a href="page3.html">Page 3</a>
-            <a href="page4.html">Page 4</a>
-            <a href="page5.html">Page 5</a>
-        </div>
-        <div class="content">
-            <h1>Page 3</h1>
-            <p>This is the content of Page 3 ...</p>
-        </div>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <a href="index.html">Home</a>
+        <a href="page1.html">Page 1</a>
+        <a href="page2.html">Page 2</a>
+        <a href="page3.html">Page 3</a>
+        <a href="page4.html">Page 4</a>
+        <a href="page5.html">Page 5</a>
     </div>
+
+    <!-- Main content area -->
+    <div class="container">
+        <h1>Multiplier App</h1>
+        <label for="number">Enter a number:</label>
+        <input type="number" id="number" placeholder="Enter a number" required>
+        <button id="multiplyBtn">Multiply by 7</button>
+
+        <div class="result" id="result"></div>
+        <div class="error" id="error"></div>
+    </div>
+
+    <!-- JavaScript embedded to handle form submission and interaction with the Flask backend -->
+    <script>
+        document.getElementById('multiplyBtn').addEventListener('click', async () => {
+            const number = document.getElementById('number').value;
+            const resultDiv = document.getElementById('result');
+            const errorDiv = document.getElementById('error');
+        
+            // Clear previous results
+            resultDiv.textContent = '';
+            errorDiv.textContent = '';
+        
+            // Validate user input
+            if (isNaN(number) || number.trim() === "") {
+                errorDiv.textContent = 'Please enter a valid number.';
+                return;
+            }
+        
+            // Send a request to your Flask app hosted on Render or locally
+            const url = 'http://127.0.0.1:5000/multiply';  // Use your Render URL if deployed
+        
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams({
+                        'number': number,
+                    }),
+                });
+        
+                // Log the raw response to inspect it
+                console.log("Response object:", response);
+        
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+        
+                // Log the parsed JSON response to see what's returned
+                const data = await response.json();
+                console.log("Parsed data:", data);
+        
+                if (data.error) {
+                    errorDiv.textContent = data.error;
+                } else if (data.result !== undefined) {
+                    resultDiv.textContent = `Result: ${data.result}`;
+                }
+            } catch (error) {
+                errorDiv.textContent = 'An error occurred. Please try again.';
+                console.error('Error:', error);  // Log the actual error for debugging
+            }
+        });
+    </script>
 </body>
 </html>
