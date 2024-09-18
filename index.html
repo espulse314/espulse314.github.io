@@ -1,7 +1,105 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dropdown Menu with Pages</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        /* Sidebar menu */
+        .sidebar {
+            width: 200px;
+            background-color: #333;
+            height: 100vh;
+            padding-top: 20px;
+        }
+
+        .sidebar a {
+            padding: 15px;
+            text-decoration: none;
+            font-size: 18px;
+            color: white;
+            display: block;
+        }
+
+        .sidebar a:hover {
+            background-color: #575757;
+        }
+
+        /* Main content */
+        .content {
+            margin-left: 200px;
+            padding: 20px;
+            flex-grow: 1;
+        }
+
+        /* Dropdown */
+        .dropdown-btn {
+            background-color: #333;
+            color: white;
+            padding: 15px;
+            font-size: 18px;
+            border: none;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .dropdown-container {
+            display: none;
+            background-color: #444;
+        }
+
+        .dropdown-container a {
+            padding-left: 30px;
+        }
+
+    </style>
+</head>
 <body>
-<h1>Hello World</h1>
-<p>I'm hosted with GitHub Pages.</p>
+
+    <div class="sidebar">
+        <button class="dropdown-btn">Pages ▼</button>
+        <div class="dropdown-container">
+            <a href="#page1">Page 1</a>
+            <a href="#page2">Page 2</a>
+            <a href="#page3">Page 3</a>
+        </div>
+    </div>
+
+    <div class="content">
+        <section id="page1">
+            <h2>Page 1</h2>
+            <p>This is the content for Page 1.</p>
+        </section>
+
+        <section id="page2">
+            <h2>Page 2</h2>
+            <p>This is the content for Page 2.</p>
+        </section>
+
+        <section id="page3">
+            <h2>Page 3</h2>
+            <p>This is the content for Page 3.</p>
+        </section>
+    </div>
+
+    <script>
+        // Toggle the dropdown menu
+        var dropdown = document.querySelector(".dropdown-btn");
+        var dropdownContent = document.querySelector(".dropdown-container");
+
+        dropdown.addEventListener("click", function() {
+            dropdownContent.style.display = dropdownContent.style.display === "block" ? "none" : "block";
+        });
+    </script>
+
 </body>
 </html>
